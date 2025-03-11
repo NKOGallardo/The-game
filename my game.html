@@ -107,7 +107,7 @@
             background-color: #4CAF50;
         }
 
-        #result {
+        #result, #hint {
             margin-top: 15px;
             font-weight: bold;
             animation: fadeResult 0.5s ease-out;
@@ -144,6 +144,7 @@
         <p>Try to guess the number between 1 and 100.</p>
         <select id="difficulty" onchange="setDifficulty()">
             <option value="30">Easy (30s)</option>
+            <option value="50">easyx2 (50s)</option>
             <option value="20">Medium (20s)</option>
             <option value="10">Hard (10s)</option>
         </select>
@@ -153,38 +154,18 @@
         <input type="number" id="guessInput" placeholder="Enter your guess">
         <button onclick="checkGuess()">Guess</button>
         <button onclick="resetGame()">Reset Game</button>
+        <button onclick="giveHint()">💡 Get a Hint</button>
         <p id="result"></p>
+        <p id="hint"></p>
     </div>
 
     <script>
-        // JavaScript logic
         let randomNumber = Math.floor(Math.random() * 100) + 1;
         let attempts = 0;
         let timeLeft = 30;
         let timerInterval = setInterval(updateTimer, 1000);
         let highestScore = localStorage.getItem('highestScore') || Infinity;
-
-        // Load audio files
-        const correctSound = new Audio('https://freesound.org/data/previews/522/522929_13197976-lq.mp3');
-        const incorrectSound = new Audio('https://freesound.org/data/previews/151/151568_2649830-lq.mp3');
-
-        // Confetti function
-        function launchConfetti() {
-            const confetti = document.createElement("div");
-            confetti.style.position = "fixed";
-            confetti.style.width = "100%";
-            confetti.style.height = "100%";
-            confetti.style.top = 0;
-            confetti.style.left = 0;
-            confetti.style.pointerEvents = "none";
-            confetti.style.zIndex = 9999;
-            document.body.appendChild(confetti);
-            confetti.innerHTML = '<canvas id="confettiCanvas"></canvas>';
-            const confettiCanvas = document.getElementById("confettiCanvas");
-            const confettiLibrary = confettiCanvas.getContext("2d");
-            // External library like canvas-confetti can be implemented here
-            setTimeout(() => confetti.remove(), 2000);
-        }
+        let hintUsed = false;
 
         function updateTimer() {
             timeLeft--;
@@ -193,9 +174,9 @@
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                document.getElementById('result').innerText = 'Time’s up! You lost the game.';
+                document.getElementById('result').innerText = 'Time’s up! You lost.';
                 document.getElementById('guessInput').disabled = true;
-                document.querySelector('button').disabled = true;
+                document.querySelectorAll('button').forEach(btn => btn.disabled = true);
             }
         }
 
@@ -205,18 +186,15 @@
 
             if (guess === randomNumber) {
                 clearInterval(timerInterval);
-                correctSound.play();
-                launchConfetti();
-                document.getElementById('result').innerText = `Congratulations! You guessed it in ${attempts} attempts.`;
+                document.getElementById('result').innerText = `🎉 You won in ${attempts} attempts!`;
 
                 if (attempts < highestScore) {
                     highestScore = attempts;
                     localStorage.setItem('highestScore', highestScore);
-                    document.getElementById('result').innerText += ' New high score!';
+                    document.getElementById('result').innerText += ' 🏆 New high score!';
                 }
             } else {
-                incorrectSound.play();
-                document.getElementById('result').innerText = guess < randomNumber ? 'Too low! Try again.' : 'Too high! Try again.';
+                document.getElementById('result').innerText = guess < randomNumber ? '📉 Too low!' : '📈 Too high!';
             }
         }
 
@@ -228,17 +206,38 @@
             timerInterval = setInterval(updateTimer, 1000);
             document.getElementById('guessInput').value = '';
             document.getElementById('guessInput').disabled = false;
-            document.querySelector('button').disabled = false;
-            document.getElementById('result').innerText = 'Game reset! Try guessing a new number.';
+            document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+            document.getElementById('result').innerText = 'Game reset! Try again.';
             document.getElementById('progress').style.width = '100%';
+            document.getElementById('hint').innerText = ''; 
+            hintUsed = false;
         }
 
-        function setDifficulty() {
-            timeLeft = Number(document.getElementById('difficulty').value);
-            document.getElementById('result').innerText = `Timer set to ${timeLeft} seconds.`;
-            clearInterval(timerInterval);
-            timerInterval = setInterval(updateTimer, 1000);
-            resetGame();
+        function giveHint() {
+            if (hintUsed) {
+                document.getElementById('hint').innerText = "⚠️ You've already used your hint!";
+                return;
+            }
+
+            let hintMessage = "💡 Hint: ";
+            if (randomNumber % 2 === 0) {
+                hintMessage += "It's an EVEN number.";
+            } else {
+                hintMessage += "It's an ODD number.";
+            }
+
+            if (randomNumber % 5 === 0) {
+                hintMessage += " It's a multiple of 5.";
+            } else if (randomNumber % 3 === 0) {
+                hintMessage += " It's a multiple of 3.";
+            }
+
+            let hintMin = randomNumber - Math.floor(Math.random() * 10);
+            let hintMax = randomNumber + Math.floor(Math.random() * 10);
+            hintMessage += ` It's between ${hintMin} and ${hintMax}.`;
+
+            document.getElementById('hint').innerText = hintMessage;
+            hintUsed = true;
         }
     </script>
 </body>
