@@ -136,6 +136,31 @@
                 font-size: 14px;
             }
         }
+
+            .back-button {
+                display: inline-block;
+                margin-top: 20px;
+                padding: 10px 20px;
+                border-radius: 25px;
+                border: 2px solid #4CAF50;
+                background-color: transparent;
+                color: #4CAF50;
+                cursor: pointer;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .back-button:hover {
+               background-color: #4CAF50;
+               color: white;
+               box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .back-button:active {
+               transform: scale(0.95);
+            }
+
     </style>
 </head>
 <body>
@@ -154,7 +179,8 @@
         <input type="number" id="guessInput" placeholder="Enter your guess">
         <button onclick="checkGuess()">Guess</button>
         <button onclick="resetGame()">Reset Game</button>
-        <button onclick="giveHint()">💡 Get a Hint</button>
+        <button onclick="giveHint()">ðŸ’¡ Get a Hint</button>               
+        <a href="index.html" class="back-button">Back 🏳</a>        
         <p id="result"></p>
         <p id="hint"></p>
     </div>
@@ -174,7 +200,7 @@
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                document.getElementById('result').innerText = 'Time’s up! You lost.';
+                document.getElementById('result').innerText = 'Timeâ€™s up! You lost.';
                 document.getElementById('guessInput').disabled = true;
                 document.querySelectorAll('button').forEach(btn => btn.disabled = true);
             }
@@ -186,15 +212,15 @@
 
             if (guess === randomNumber) {
                 clearInterval(timerInterval);
-                document.getElementById('result').innerText = `🎉 You won in ${attempts} attempts!`;
+                document.getElementById('result').innerText = `ðŸŽ‰ You won in ${attempts} attempts!`;
 
                 if (attempts < highestScore) {
                     highestScore = attempts;
                     localStorage.setItem('highestScore', highestScore);
-                    document.getElementById('result').innerText += ' 🏆 New high score!';
+                    document.getElementById('result').innerText += ' ðŸ† New high score!';
                 }
             } else {
-                document.getElementById('result').innerText = guess < randomNumber ? '📉 Too low!' : '📈 Too high!';
+                document.getElementById('result').innerText = guess < randomNumber ? 'ðŸ“‰ Too low!' : 'ðŸ“ˆ Too high!';
             }
         }
 
@@ -215,11 +241,11 @@
 
         function giveHint() {
             if (hintUsed) {
-                document.getElementById('hint').innerText = "⚠️ You've already used your hint!";
+                document.getElementById('hint').innerText = "âš ï¸ You've already used your hint!";
                 return;
             }
 
-            let hintMessage = "💡 Hint: ";
+            let hintMessage = "ðŸ’¡ Hint: ";
             if (randomNumber % 2 === 0) {
                 hintMessage += "It's an EVEN number.";
             } else {
