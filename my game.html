@@ -86,6 +86,7 @@
         button:hover {
             background-color: #45a049;
             transform: scale(1.05);
+            box-shadow: 0px 3px 7px black;
         }
 
         button:active {
@@ -155,10 +156,23 @@
                background-color: #4CAF50;
                color: white;
                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+               transform: scale(0.70);
             }
 
             .back-button:active {
                transform: scale(0.95);
+            }
+
+            .music-toggle {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.2s;
+                margin: 5px;
             }
 
     </style>
@@ -179,13 +193,27 @@
         <input type="number" id="guessInput" placeholder="Enter your guess">
         <button onclick="checkGuess()">Guess</button>
         <button onclick="resetGame()">Reset Game</button>
-        <button onclick="giveHint()">ðŸ’¡ Get a Hint</button>               
-        <a href="index.html" class="back-button">Back 🏳</a>        
-        <p id="result"></p>
-        <p id="hint"></p>
+        <button onclick="giveHint()">🧠 Get a Hint</button> 
+        <butto class="music-toggle" onclick="toggleMusic()">Music</butto>              
+        <a href="index.html" class="back-button">Back 🏳</a> 
     </div>
 
     <script>
+       /* Sound */
+        //Soft Piano Music (Free & Working)
+        const bgMusic = new Audio('https://www.bensound.com/bensound-music/bensound-slowmotion.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.3;
+        bgMusic.play();
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+            } else {
+                bgMusic.pause();
+            }
+        }
+
         let randomNumber = Math.floor(Math.random() * 100) + 1;
         let attempts = 0;
         let timeLeft = 30;
@@ -200,7 +228,7 @@
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                document.getElementById('result').innerText = 'Timeâ€™s up! You lost.';
+                document.getElementById('result').innerText = 'Time ⏰ up! You lost.';
                 document.getElementById('guessInput').disabled = true;
                 document.querySelectorAll('button').forEach(btn => btn.disabled = true);
             }
@@ -212,15 +240,15 @@
 
             if (guess === randomNumber) {
                 clearInterval(timerInterval);
-                document.getElementById('result').innerText = `ðŸŽ‰ You won in ${attempts} attempts!`;
+                document.getElementById('result').innerText = `💖👏You won in ${attempts} attempts!`;
 
                 if (attempts < highestScore) {
                     highestScore = attempts;
                     localStorage.setItem('highestScore', highestScore);
-                    document.getElementById('result').innerText += ' ðŸ† New high score!';
+                    document.getElementById('result').innerText += 'New high score!';
                 }
             } else {
-                document.getElementById('result').innerText = guess < randomNumber ? 'ðŸ“‰ Too low!' : 'ðŸ“ˆ Too high!';
+                document.getElementById('result').innerText = guess < randomNumber ? '📉Too low!' : '📈Too high!';
             }
         }
 
@@ -241,11 +269,11 @@
 
         function giveHint() {
             if (hintUsed) {
-                document.getElementById('hint').innerText = "âš ï¸ You've already used your hint!";
+                document.getElementById('hint').innerText = "(┬┬﹏┬┬) You've already used your hint!";
                 return;
             }
 
-            let hintMessage = "ðŸ’¡ Hint: ";
+            let hintMessage = "❔Hint: ";
             if (randomNumber % 2 === 0) {
                 hintMessage += "It's an EVEN number.";
             } else {
