@@ -138,43 +138,42 @@
             }
         }
 
-            .back-button {
-                display: inline-block;
-                margin-top: 20px;
-                padding: 10px 20px;
-                border-radius: 25px;
-                border: 2px solid #4CAF50;
-                background-color: transparent;
-                color: #4CAF50;
-                cursor: pointer;
-                font-size: 16px;
-                transition: all 0.3s ease;
-                text-decoration: none;
-            }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid #4CAF50;
+            background-color: transparent;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-            .back-button:hover {
-               background-color: #4CAF50;
-               color: white;
-               box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-               transform: scale(0.70);
-            }
+        .back-button:hover {
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            transform: scale(0.70);
+        }
 
-            .back-button:active {
-               transform: scale(0.95);
-            }
+        .back-button:active {
+            transform: scale(0.95);
+        }
 
-            .music-toggle {
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                background-color: #4CAF50;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s, transform 0.2s;
-                margin: 5px;
-            }
-
+        .music-toggle {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -183,7 +182,7 @@
         <p>Try to guess the number between 1 and 100.</p>
         <select id="difficulty" onchange="setDifficulty()">
             <option value="30">Easy (30s)</option>
-            <option value="50">easyx2 (50s)</option>
+            <option value="50">Easyx2 (50s)</option>
             <option value="20">Medium (20s)</option>
             <option value="10">Hard (10s)</option>
         </select>
@@ -193,18 +192,18 @@
         <input type="number" id="guessInput" placeholder="Enter your guess">
         <button onclick="checkGuess()">Guess</button>
         <button onclick="resetGame()">Reset Game</button>
-        <button onclick="giveHint()">🧠 Get a Hint</button> 
-        <butto class="music-toggle" onclick="toggleMusic()">Music</butto>              
-        <a href="index.html" class="back-button">Back 🏳</a> 
+        <button onclick="giveHint()">🧠 Get a Hint</button>
+        <button class="music-toggle" onclick="toggleMusic()">Music</button>
+        <a href="index.html" class="back-button">Back 🏳</a>
+        <div id="result"></div>
+        <div id="hint"></div>
     </div>
 
     <script>
-       /* Sound */
-        //Soft Piano Music (Free & Working)
+        /* Sound */
         const bgMusic = new Audio('https://www.bensound.com/bensound-music/bensound-slowmotion.mp3');
         bgMusic.loop = true;
         bgMusic.volume = 0.3;
-        bgMusic.play();
 
         function toggleMusic() {
             if (bgMusic.paused) {
@@ -245,7 +244,7 @@
                 if (attempts < highestScore) {
                     highestScore = attempts;
                     localStorage.setItem('highestScore', highestScore);
-                    document.getElementById('result').innerText += 'New high score!';
+                    document.getElementById('result').innerText += ' New high score!';
                 }
             } else {
                 document.getElementById('result').innerText = guess < randomNumber ? '📉Too low!' : '📈Too high!';
@@ -263,7 +262,7 @@
             document.querySelectorAll('button').forEach(btn => btn.disabled = false);
             document.getElementById('result').innerText = 'Game reset! Try again.';
             document.getElementById('progress').style.width = '100%';
-            document.getElementById('hint').innerText = ''; 
+            document.getElementById('hint').innerText = '';
             hintUsed = false;
         }
 
