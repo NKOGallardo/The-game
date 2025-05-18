@@ -19,11 +19,12 @@
         <div id="progressBar">
             <div id="progress"></div>
         </div>
-        <input type="number" id="guessInput" placeholder="Enter your guess">
-        <button onclick="checkGuess()">Guess</button>
-        <button onclick="resetGame()">Reset Game</button>
-        <button onclick="giveHint()">🧠 Get a Hint</button>
-        <button class="music-toggle" onclick="toggleMusic()">Music</button>
+        <input class="Guess" type="number" id="guessInput" placeholder="Enter your guess">
+        <button id="guessBtn">Guess</button>
+        <button id="resetBtn">Reset Game</button>
+        <button id="hintBtn">🧠 Get a Hint</button>
+        <button id="musicBtn" class="music-toggle">Music</button>
+        <button id="playAgainBtn" style="display:none;">🔄 Play Again</button>
         <a href="index.html" class="back-button">Back 🏳</a>
         <div id="result"></div>
         <div id="hint"></div>
