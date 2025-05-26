@@ -1,3 +1,22 @@
+// Google Sign-In Setup
+function handleCredentialResponse(response) {
+  const userData = jwt_decode(response.credential);
+  alert(`Welcome, ${userData.name}!`);
+  document.getElementById("user-info").textContent = `Welcome, ${userData.name}`;
+}
+
+window.onload = function () {
+  google.accounts.id.initialize({
+    client_id: "512139929261-noluvu1d4bkd3uq1qlaih1h93sfo9tls.apps.googleusercontent.com",
+    callback: handleCredentialResponse
+  });
+  google.accounts.id.renderButton(
+    document.getElementById("google-signin"),
+    { theme: "outline", size: "large" }
+  );
+};
+
+
 const Game = {
   settings: {
     musicUrl: 'https://www.bensound.com/bensound-music/bensound-slowmotion.mp3',
@@ -133,3 +152,4 @@ const Game = {
 };
 
 document.addEventListener('DOMContentLoaded', () => Game.init());
+
